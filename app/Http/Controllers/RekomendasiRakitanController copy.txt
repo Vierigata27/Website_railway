@@ -1,0 +1,128 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Komponen;
+use Illuminate\Support\Facades\DB;
+use RealRashid\SweetAlert\Facades\Alert;
+
+class RekomendasiRakitanController extends Controller
+{
+   
+       public function algoritmagenetika($popSize = 200, $generations = 250, $budget = 10000000)
+    {
+        $population = collect(range(1, $popSize))->map(fn() => $this->createIndividual());
+
+        for ($generation = 0; $generation < $generations; $generation++) {
+            $population = $population->sortByDesc(fn($ind) => $this->calculateFitness($ind, $budget))->take($popSize / 2);
+
+            $newPopulation = collect();
+            for ($i = 0; $i < $popSize; $i++) {
+                $parent1 = $population->random();
+                $parent2 = $population->random();
+                $child = $this->crossover($parent1, $parent2);
+                $child = $this->mutate($child);
+                $newPopulation->push($child);
+            }
+
+            $population = $newPopulation;
+        }
+
+        $bestIndividual = $population->first();
+        $bestFitness = $this->calculateFitness($bestIndividual, $budget);
+
+        return view('frontend.rekomendasi.hasilrekomendasi', [
+            'best_individual' => $bestIndividual,
+            'best_fitness' => $bestFitness,
+            'budget' => $budget
+        ]);
+    }
+
+    private function createIndividual()
+    {
+        return [
+            'CPU' => Komponen::where('id_kategori', 1)->inRandomOrder()->first(),
+            'Motherboard' => Komponen::where('id_kategori', 2)->inRandomOrder()->first(),
+            'GPU' => Komponen::where('id_kategori', 3)->inRandomOrder()->first(),
+            'RAM' => Komponen::where('id_kategori', 4)->inRandomOrder()->first(),
+            'Storage' => Komponen::where('id_kategori', 5)->inRandomOrder()->first(),
+            'Power Supply' => Komponen::where('id_kategori', 6)->inRandomOrder()->first(),
+            'Casing' => Komponen::where('id_kategori', 7)->inRandomOrder()->first(),
+            'Fan CPU' => Komponen::where('id_kategori', 8)->inRandomOrder()->first(),
+        ];
+    }
+
+    //menghitung fitness
+    private function calculateFitness($individual, $budget)
+    {
+        // Hitung total harga dan total performa (hanya dari CPU dan GPU)
+        $total_harga = collect($individual)->sum('harga_komponen');
+        $total_performa = $individual['CPU']->performa_komponen + $individual['GPU']->performa_komponen;
+
+        // Cek kompatibilitas (C(i))
+        $compatibility = $this->checkCompatibility($individual) ? 1 : 0;
+
+        // Jika total harga melebihi anggaran, fitness = 0
+        if ($total_harga > $budget) {
+            return 0;
+        }
+
+        // Hitung nilai fitness berdasarkan rumus
+        return ($total_performa * $compatibility) / (($budget - $total_harga) + 1);
+    }
+
+    private function checkCompatibility($individual)
+    {
+        // Contoh aturan kompatibilitas (bisa diperluas)
+        $cpu_socket = $individual['CPU']->soket_komponen;
+        $motherboard_socket = $individual['Motherboard']->soket_komponen;
+
+        return $cpu_socket === $motherboard_socket;
+    }
+
+    //crosover
+    private function crossover($parent1, $parent2)
+    {
+        $child = [];
+
+        foreach ($parent1 as $key => $value) {
+            $child[$key] = rand(0, 1) ? $parent1[$key] : $parent2[$key];
+        }
+
+        return $child;
+    }
+
+    //mutasi
+    private function mutate($individual, $mutationRate = 0.4)
+    {
+        if (rand(0, 100) / 100 < $mutationRate) {
+            $kategori = rand(1, 8);
+            $individual[array_keys($individual)[$kategori - 1]] = Komponen::where('id_kategori', $kategori)->inRandomOrder()->first();
+        }
+
+        return $individual;
+    }
+
+        // public function getRekomendasi(Request $request)
+    // {
+    //     // Pastikan budget ada, default 5 juta jika kosong
+    //     $budget = $request->input('budget', 5000000);
+
+    //     // Kirim request ke API Flask
+    //     $response = Http::post('http://127.0.0.1:5000/rekomendasi', [
+    //         'budget' => $budget
+    //     ]);
+
+    //     // Periksa apakah respons sukses
+    //     if ($response->failed() || empty($response->json()) || !isset($response->json()['rakitan_terbaik'])) {
+    //         return Redirect::route('form.rekomendasi')->withErrors(['msg' => 'Gagal mendapatkan rekomendasi. Silakan coba lagi!']);
+    //     }
+
+    //     // Ambil data dari API Flask
+    //     $data = $response->json();
+    //     $data['budget'] = $budget; // Pastikan budget tersedia
+
+    //     return view('frontend.rekomendasi.hasilrekomendasi', ['data' => $data]);
+    // }
+}
