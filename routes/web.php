@@ -56,7 +56,7 @@ Route::middleware([\App\Http\Middleware\UserCookieMiddleware::class])->group(fun
 
     // Route::get('/rekomendasi', [RekomendasiRakitanController::class, 'algoritmagenetika'])->name('algoritmagenetika');
     Route::get('/input_rekomendasi', [RekomendasiRakitanController::class, 'createrekomendasi'])->name('form.rekomendasi');
-    Route::post('/rekomendasi', [RekomendasiRakitanController::class, 'algoritma_genetika1'])->name('rekomendasi.get');
+    Route::post('/rekomendasi', [RekomendasiRakitanController::class, 'algoritma_genetika'])->name('rekomendasi.get');
     Route::get('/hasilrekomendasi/{id}', [RekomendasiRakitanController::class, 'hasilrekomendasi'])->name('hasilrekomendasi.show');
     Route::get('/downloadhasilrekomendasi/{id}', [RekomendasiRakitanController::class, 'cetakhasilrekomendasi'])->name('downloadrekomendasi.pdf');
 
