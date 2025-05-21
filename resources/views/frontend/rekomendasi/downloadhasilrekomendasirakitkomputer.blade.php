@@ -3,59 +3,48 @@
 
 <style>
     body {
-        background-color: #121212;
-        color: white;
-        font-family: 'Arial', sans-serif;
+        background-color: #ffffff; /* Ubah ke putih untuk hemat tinta saat print */
+        color: #000000;
+        font-family: DejaVu Sans, sans-serif;
     }
     .hero {
         text-align: center;
-        padding: 50px 20px;
+        padding: 30px 20px;
     }
     .hero h2 {
-        font-size: 28px;
+        font-size: 20px;
         font-weight: bold;
         color: #16c60c;
     }
     .hero h3, .hero h4 {
         font-weight: bold;
-        color: #e0e0e0;
+        color: #222222;
     }
     .hero p {
-        font-size: 16px;
-        color: #b0b0b0;
-    }
-    .table-container {
-        margin-top: 30px;
-        overflow-x: auto;
+        font-size: 14px;
+        color: #444444;
     }
     .table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        background-color: #1e1e1e;
-        color: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+        font-size: 12px;
     }
     .table th, .table td {
-        padding: 12px;
+        padding: 10px;
         text-align: center;
-        border-bottom: 1px solid #444;
+        border: 1px solid #000;
     }
     .table thead {
-        background-color: #333;
-    }
-    .table tbody tr:hover {
-        background-color: #252525;
+        background-color: #cccccc;
     }
     .table tfoot {
-        background-color: #444;
+        background-color: #eeeeee;
         font-weight: bold;
     }
     .total-row {
-        background-color: #16c60c !important;
-        color: black;
+        background-color: #16c60c;
+        color: white;
         font-weight: bold;
     }
 </style>

@@ -5,41 +5,54 @@
     <title>Hasil Simulasi Rakit Komputer</title>
     <style>
         body {
-            font-family: DejaVu Sans, Helvetica, sans-serif;
-            background-color: #f8f9fa;
+            font-family: DejaVu Sans, Helvetica, sans-serif; /* Kompatibel font */
+            background-color: #ffffff; /* Ubah ke putih agar hasil print bagus */
             margin: 20px;
+            color: #000000;
         }
+    
         .container {
             margin-top: 30px;
         }
+    
         .table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
+            font-size: 12px;
         }
+    
         .table th, .table td {
-            border: 1px solid #ccc;
+            border: 1px solid #000000;
             padding: 8px;
+            text-align: center;
         }
+    
         .table th {
             background-color: #343a40;
-            color: white;
+            color: #ffffff;
         }
+    
         .table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f0f0f0;
         }
-        .table tr:hover {
-            background-color: #e2e6ea;
+    
+        /* Hover tidak berfungsi di PDF, bisa dihapus atau diganti efek statis */
+        .table tr:nth-child(odd) {
+            background-color: #ffffff;
         }
+    
         .highlight {
             color: #28a745;
             font-weight: bold;
         }
+    
         .total-row {
             background-color: #343a40;
-            color: white;
+            color: #ffffff;
             font-weight: bold;
         }
+    
         h2, h4 {
             margin: 0;
             padding: 0;
