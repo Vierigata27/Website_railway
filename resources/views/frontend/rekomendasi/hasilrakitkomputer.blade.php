@@ -69,9 +69,9 @@
                 </h3>
 
                 <!-- Tombol Aksi -->
-                <a href="{{ route('downloadrekomendasi.pdf', $rekomendasi->id_rekomendasi) }}" class="btn btn-danger">
+                {{-- <a href="{{ route('downloadrekomendasi.pdf', $rekomendasi->id_rekomendasi) }}" class="btn btn-danger">
                     <i class="fas fa-file-pdf"></i> Download PDF
-                </a>
+                </a> --}}
 
                 <a href="#" onclick="confirmLogout()" class="btn btn-dark">
                     <i class="fas fa-home"></i> Home
